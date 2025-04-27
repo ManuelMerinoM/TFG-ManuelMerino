@@ -8,6 +8,7 @@ TagManager:
   - ParedInt
   - Carretera
   - Coche
+  - Jugador
   layers:
   - Default
   - TransparentFX

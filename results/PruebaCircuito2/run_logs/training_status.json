@@ -1,0 +1,38 @@
+{
+    "NNCircuito": {
+        "checkpoints": [
+            {
+                "steps": 499987,
+                "file_path": "results\\PruebaCircuito2\\NNCircuito\\NNCircuito-499987.onnx",
+                "reward": 10.204328034590516,
+                "creation_time": 1743414512.5836167,
+                "auxillary_file_paths": [
+                    "results\\PruebaCircuito2\\NNCircuito\\NNCircuito-499987.pt"
+                ]
+            },
+            {
+                "steps": 500051,
+                "file_path": "results\\PruebaCircuito2\\NNCircuito\\NNCircuito-500051.onnx",
+                "reward": 10.204328034590516,
+                "creation_time": 1743414512.6740031,
+                "auxillary_file_paths": [
+                    "results\\PruebaCircuito2\\NNCircuito\\NNCircuito-500051.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 500051,
+            "file_path": "results\\PruebaCircuito2\\NNCircuito.onnx",
+            "reward": 10.204328034590516,
+            "creation_time": 1743414512.6740031,
+            "auxillary_file_paths": [
+                "results\\PruebaCircuito2\\NNCircuito\\NNCircuito-500051.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.6.0+cpu"
+    }
+}
