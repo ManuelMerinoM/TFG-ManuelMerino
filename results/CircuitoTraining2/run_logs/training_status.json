@@ -1,0 +1,65 @@
+{
+    "CircuitoAgent": {
+        "checkpoints": [
+            {
+                "steps": 499898,
+                "file_path": "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-499898.onnx",
+                "reward": null,
+                "creation_time": 1746983112.638159,
+                "auxillary_file_paths": [
+                    "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-499898.pt"
+                ]
+            },
+            {
+                "steps": 999936,
+                "file_path": "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-999936.onnx",
+                "reward": -5.19260672852397,
+                "creation_time": 1746984772.9284406,
+                "auxillary_file_paths": [
+                    "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-999936.pt"
+                ]
+            },
+            {
+                "steps": 1499884,
+                "file_path": "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-1499884.onnx",
+                "reward": null,
+                "creation_time": 1746986434.405218,
+                "auxillary_file_paths": [
+                    "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-1499884.pt"
+                ]
+            },
+            {
+                "steps": 1999916,
+                "file_path": "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-1999916.onnx",
+                "reward": null,
+                "creation_time": 1746988022.4435844,
+                "auxillary_file_paths": [
+                    "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-1999916.pt"
+                ]
+            },
+            {
+                "steps": 2000044,
+                "file_path": "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-2000044.onnx",
+                "reward": null,
+                "creation_time": 1746988022.5792453,
+                "auxillary_file_paths": [
+                    "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-2000044.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2000044,
+            "file_path": "results\\CircuitoTraining2\\CircuitoAgent.onnx",
+            "reward": null,
+            "creation_time": 1746988022.5792453,
+            "auxillary_file_paths": [
+                "results\\CircuitoTraining2\\CircuitoAgent\\CircuitoAgent-2000044.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.6.0+cpu"
+    }
+}

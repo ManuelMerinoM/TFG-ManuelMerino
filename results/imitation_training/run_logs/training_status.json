@@ -1,0 +1,29 @@
+{
+    "CircuitoAgent": {
+        "checkpoints": [
+            {
+                "steps": 300177,
+                "file_path": "results\\imitation_training\\CircuitoAgent\\CircuitoAgent-300177.onnx",
+                "reward": null,
+                "creation_time": 1747156925.0929153,
+                "auxillary_file_paths": [
+                    "results\\imitation_training\\CircuitoAgent\\CircuitoAgent-300177.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 300177,
+            "file_path": "results\\imitation_training\\CircuitoAgent.onnx",
+            "reward": null,
+            "creation_time": 1747156925.0929153,
+            "auxillary_file_paths": [
+                "results\\imitation_training\\CircuitoAgent\\CircuitoAgent-300177.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "2.6.0+cpu"
+    }
+}
