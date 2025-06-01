@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
+// Tool for creating and managing checkpoints along a racing track
+// Automatically places checkpoints based on track analysis and curve detection
 public class CheckpointCreator : MonoBehaviour
 {
     [Header("Checkpoint Settings")]
@@ -16,16 +18,16 @@ public class CheckpointCreator : MonoBehaviour
     [SerializeField] private Vector3 checkpointScale = new Vector3(5f, 3f, 0.5f);
     [SerializeField] private float trackOffset = 0f; // Distance from track center
     
-    [Header("Orientación de Checkpoints")]
-    [SerializeField] private bool orientacionPerpendicular = true;
-    [SerializeField] private Vector3 rotacionAdicional = Vector3.zero;
-    [SerializeField] private bool evitarSuperposicionDeCheckpoints = true;
-    [SerializeField] private float distanciaMinimaEntreCheckpoints = 5f;
+    [Header("Checkpoint Orientation")]
+    [SerializeField] private bool orientacionPerpendicular = true; // Place checkpoints perpendicular to track
+    [SerializeField] private Vector3 rotacionAdicional = Vector3.zero; // Additional rotation for checkpoints
+    [SerializeField] private bool evitarSuperposicionDeCheckpoints = true; // Prevent checkpoint overlap
+    [SerializeField] private float distanciaMinimaEntreCheckpoints = 5f; // Minimum distance between checkpoints
     
-    [Header("Colocación Inteligente")]
-    [SerializeField] private bool priorizar_curvas = true;
-    [SerializeField] private bool checkpoint_en_cada_curva = false;
-    [SerializeField] private float escala_especial_en_curvas = 1.2f;
+    [Header("Smart Placement")]
+    [SerializeField] private bool priorizar_curvas = true; // Prioritize curves for checkpoint placement
+    [SerializeField] private bool checkpoint_en_cada_curva = false; // Place checkpoint at every curve
+    [SerializeField] private float escala_especial_en_curvas = 1.2f; // Special scale for checkpoints in curves
     
     [Header("Track Analysis")]
     [SerializeField] private LayerMask trackLayer;
@@ -38,6 +40,7 @@ public class CheckpointCreator : MonoBehaviour
 
     private TrackAnalyzer trackAnalyzer;
     
+    // Validate component references when values change in inspector
     private void OnValidate()
     {
         if (useExistingAnalyzer && existingAnalyzer == null)
@@ -47,6 +50,7 @@ public class CheckpointCreator : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    // Main method to generate checkpoints along the track
     [ContextMenu("Generate Checkpoints")]
     public void GenerateCheckpoints()
     {
@@ -146,7 +150,8 @@ public class CheckpointCreator : MonoBehaviour
         SetupTrackCheckpoints();
     }
 
-    // Nuevo método que coloca checkpoints priorizando curvas
+    // Creates checkpoints prioritizing curves in the track
+    // Places checkpoints at curves first, then fills remaining spots evenly
     private void CreateCheckpointsWithPriorityOnCurves(List<TrackAnalyzer.TrackPoint> trackPoints)
     {
         // Primero identificar todas las curvas
@@ -219,6 +224,8 @@ public class CheckpointCreator : MonoBehaviour
         Debug.Log($"Created {checkpointsParent.childCount} checkpoints (including {selectedCurveIndices.Count} on curves)");
     }
 
+    // Creates checkpoints evenly distributed along the track
+    // Uses regular intervals to place checkpoints
     private void CreateCheckpointsFromTrackPoints(List<TrackAnalyzer.TrackPoint> trackPoints)
     {
         int totalPoints = trackPoints.Count;
@@ -260,7 +267,8 @@ public class CheckpointCreator : MonoBehaviour
         Debug.Log($"Created {checkpointsParent.childCount} checkpoints.");
     }
     
-    // Método auxiliar para crear un checkpoint en un punto específico
+    // Creates a single checkpoint at a specific track point
+    // Handles positioning, rotation, and scaling based on track properties
     private bool CreateCheckpointAtPoint(TrackAnalyzer.TrackPoint trackPoint, List<Vector3> checkpointPositions, bool isOnCurve)
     {
         // Create checkpoint GameObject
@@ -350,6 +358,8 @@ public class CheckpointCreator : MonoBehaviour
         return true;
     }
 
+    // Sets up the TrackCheckpoints component to manage all created checkpoints
+    // Connects checkpoints to the tracking system and preserves car references
     private void SetupTrackCheckpoints()
     {
         // Get or add TrackCheckpoints component
@@ -407,7 +417,8 @@ public class CheckpointCreator : MonoBehaviour
         Debug.Log("Successfully set up TrackCheckpoints controller.");
     }
     
-    // Visualization in the editor
+    // Draws visual connections between checkpoints in the editor
+    // Helps visualize the checkpoint sequence
     private void OnDrawGizmos()
     {
         if (checkpointsParent != null && checkpointsParent.childCount > 0)
@@ -430,6 +441,8 @@ public class CheckpointCreator : MonoBehaviour
 }
 
 #if UNITY_EDITOR
+// Custom editor for CheckpointCreator
+// Adds a button to generate checkpoints in the inspector
 [CustomEditor(typeof(CheckpointCreator))]
 public class CheckpointCreatorEditor : Editor
 {

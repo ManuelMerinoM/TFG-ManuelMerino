@@ -25,9 +25,9 @@ behaviors:
         encoding_size: 256
         learning_rate: 0.0003
     behavioral_cloning:
-      demo_path: Assets/Demonstrations
+      demo_path: Assets/Demonstrations/CircuitoDificil.demo
       strength: 0.7
       steps: 100000
-    max_steps: 300000
+    max_steps: 400000
     time_horizon: 128
     summary_freq: 10000 

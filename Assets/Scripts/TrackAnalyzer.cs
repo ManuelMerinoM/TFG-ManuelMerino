@@ -2,17 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Analyzes racing tracks to create a series of points that define the track's path
+// Detects curves, track width, and creates an optimized racing line
 public class TrackAnalyzer : MonoBehaviour
 {
-    // Represents a point on the track with position and direction
+    // Represents a point on the track with position, direction, and track properties
     [System.Serializable]
     public class TrackPoint
     {
-        public Vector3 position;
-        public Vector3 direction;
-        public float width;
-        public bool isCurve;       // Nuevo: indica si este punto está en una curva
-        public float curvature;    // Nuevo: cuánto se curva la pista en este punto (0 = recto, 1 = curva cerrada)
+        public Vector3 position;    // Position on the track
+        public Vector3 direction;   // Direction of travel at this point
+        public float width;         // Width of the track at this point
+        public bool isCurve;        // Whether this point is part of a curve
+        public float curvature;     // How sharp the curve is (0 = straight, 1 = tight curve)
 
         public TrackPoint(Vector3 pos, Vector3 dir, float w, bool curve = false, float curv = 0f)
         {
@@ -25,34 +27,33 @@ public class TrackAnalyzer : MonoBehaviour
     }
 
     [Header("Track Settings")]
-    [SerializeField] private Transform trackMesh;
-    [SerializeField] private float sampleDistance = 5f;
-    [SerializeField] private float raycastHeight = 10f;
-    [SerializeField] private LayerMask trackLayer;
-    [SerializeField] private bool closedTrack = true;
-    [SerializeField] private Transform startPosition;
+    [SerializeField] private Transform trackMesh;        // The track's mesh transform
+    [SerializeField] private float sampleDistance = 5f;  // Distance between sample points
+    [SerializeField] private float raycastHeight = 10f;  // Height for raycasting
+    [SerializeField] private LayerMask trackLayer;       // Layer containing the track
+    [SerializeField] private bool closedTrack = true;    // Whether the track forms a loop
+    [SerializeField] private Transform startPosition;    // Starting point for analysis
 
-    [Header("Análisis de Curvas")]
-    [SerializeField] private float curvatureThreshold = 0.2f; // Umbral para considerar un punto como curva
-    [SerializeField] private bool centrarEnCurvas = true;     // Centrar puntos en el medio de las curvas
+    [Header("Curve Analysis")]
+    [SerializeField] private float curvatureThreshold = 0.2f;  // Threshold to consider a point as a curve
+    [SerializeField] private bool centrarEnCurvas = true;     // Center points in curves
 
     [Header("Debug Options")]
-    [SerializeField] private bool showDebugVisuals = true;
-    [SerializeField] private bool showExtendedDebug = true;
-    [SerializeField] private bool autoDetectTrackLayer = true;
-    [SerializeField] private bool crearObjetosDebug = false;  // Nueva opción para crear/eliminar objetos de debug
-    [SerializeField] private float gizmoSize = 0.5f;
+    [SerializeField] private bool showDebugVisuals = true;    // Show debug gizmos
+    [SerializeField] private bool showExtendedDebug = true;   // Show detailed debug info
+    [SerializeField] private bool autoDetectTrackLayer = true;// Auto-detect track layer
+    [SerializeField] private bool crearObjetosDebug = false;  // Create debug visualization objects
+    [SerializeField] private float gizmoSize = 0.5f;          // Size of debug gizmos
     
-    // Output: Racing line points
+    // Track analysis results
     private List<TrackPoint> trackPoints = new List<TrackPoint>();
-    
-    // Analysis results
     public List<TrackPoint> TrackPoints => trackPoints;
     public bool IsTrackClosed => closedTrack;
     
-    // Referencias a objetos de debug para poder limpiarlos después
+    // References to debug objects for cleanup
     private List<GameObject> debugObjects = new List<GameObject>();
     
+    // Try to find track mesh in parent if not assigned
     private void OnValidate()
     {
         if (trackMesh == null && transform.parent != null)
@@ -62,6 +63,7 @@ public class TrackAnalyzer : MonoBehaviour
         }
     }
     
+    // Main method to analyze track with automatic layer detection
     public void AnalyzeTrackWithLayerDetection()
     {
         if (autoDetectTrackLayer && trackMesh != null)
@@ -92,7 +94,8 @@ public class TrackAnalyzer : MonoBehaviour
         AnalyzeTrack();
     }
     
-    // Método para encontrar el mesh real de la pista
+    // Find the actual track mesh by searching through children
+    // Looks for objects with mesh components and specific names
     private Transform FindActualTrackMesh(Transform parent)
     {
         // Primero verificar si el objeto actual tiene un MeshRenderer o MeshFilter
@@ -136,7 +139,7 @@ public class TrackAnalyzer : MonoBehaviour
         return null;
     }
     
-    // Limpiar objetos de debug creados anteriormente
+    // Clean up all debug visualization objects
     private void CleanupDebugObjects()
     {
         foreach (var obj in debugObjects)
@@ -170,6 +173,8 @@ public class TrackAnalyzer : MonoBehaviour
         }
     }
     
+    // Main track analysis method
+    // Creates a series of points that define the track's path
     public void AnalyzeTrack()
     {
         // Limpiar objetos de debug anteriores
@@ -337,7 +342,8 @@ public class TrackAnalyzer : MonoBehaviour
         }
     }
     
-    // Nuevo método para detectar curvas y optimizar puntos
+    // Detect curves and optimize track points
+    // Marks points as curves and adjusts their positions if needed
     private void DetectCurvesAndOptimizePoints()
     {
         if (trackPoints.Count < 3)
@@ -392,7 +398,7 @@ public class TrackAnalyzer : MonoBehaviour
         trackPoints = optimizedPoints;
     }
     
-    // Utilidad para convertir una LayerMask a string para depuración
+    // Convert LayerMask to string for debugging
     private string LayerMaskToString(LayerMask layerMask)
     {
         string result = "";
@@ -406,6 +412,8 @@ public class TrackAnalyzer : MonoBehaviour
         return result.TrimEnd(',', ' ');
     }
     
+    // Follow the track from a starting point
+    // Creates a series of points along the track's path
     private void FollowTrack(TrackPoint startPoint)
     {
         TrackPoint currentPoint = startPoint;
@@ -482,6 +490,8 @@ public class TrackAnalyzer : MonoBehaviour
         }
     }
     
+    // Find the width of the track at a specific point
+    // Casts rays to both sides to find track edges
     private float FindTrackWidth(Vector3 position, Vector3 direction)
     {
         // Cast rays to the left and right to find the track edges
@@ -494,6 +504,8 @@ public class TrackAnalyzer : MonoBehaviour
         return leftDist + rightDist;
     }
     
+    // Cast a ray to find the track edge
+    // Returns distance to edge or default value if no edge found
     private float CastToEdge(Vector3 position, Vector3 direction, float maxDistance)
     {
         RaycastHit hit;
@@ -511,6 +523,8 @@ public class TrackAnalyzer : MonoBehaviour
         }
     }
     
+    // Draw debug visualization in the editor
+    // Shows track points, curves, and track width
     private void OnDrawGizmos()
     {
         if (!showDebugVisuals)
@@ -574,7 +588,7 @@ public class TrackAnalyzer : MonoBehaviour
         }
     }
 
-    // Public method to get a copy of the track points
+    // Get a copy of the analyzed track points
     public List<TrackPoint> GetTrackPoints()
     {
         return new List<TrackPoint>(trackPoints);
@@ -582,7 +596,8 @@ public class TrackAnalyzer : MonoBehaviour
 }
 
 #if UNITY_EDITOR
-// Editor personalizado para añadir un botón para limpiar los objetos de debug
+// Custom editor for TrackAnalyzer
+// Adds buttons for track analysis and debug cleanup
 [UnityEditor.CustomEditor(typeof(TrackAnalyzer))]
 public class TrackAnalyzerEditor : UnityEditor.Editor
 {
@@ -593,19 +608,19 @@ public class TrackAnalyzerEditor : UnityEditor.Editor
         TrackAnalyzer analyzer = (TrackAnalyzer)target;
         
         UnityEditor.EditorGUILayout.Space();
-        if (GUILayout.Button("Analizar Pista (Auto-Detectar Capa)", GUILayout.Height(30)))
+        if (GUILayout.Button("Analyze Track (Auto-Detect Layer)", GUILayout.Height(30)))
         {
             analyzer.AnalyzeTrackWithLayerDetection();
         }
         
-        if (GUILayout.Button("Analizar Pista (Configuración Actual)", GUILayout.Height(30)))
+        if (GUILayout.Button("Analyze Track (Current Settings)", GUILayout.Height(30)))
         {
             analyzer.AnalyzeTrack();
         }
         
-        if (GUILayout.Button("Limpiar Objetos de Debug", GUILayout.Height(24)))
+        if (GUILayout.Button("Clean Debug Objects", GUILayout.Height(24)))
         {
-            // Buscar y eliminar objetos RayVisualizer y HitMarker
+            // Find and remove debug visualization objects
             GameObject[] visualizers = GameObject.FindGameObjectsWithTag("EditorOnly");
             foreach (var visualizer in visualizers)
             {
@@ -615,7 +630,7 @@ public class TrackAnalyzerEditor : UnityEditor.Editor
                 }
             }
             
-            // Buscar por nombre
+            // Search by name
             var allObjects = FindObjectsOfType<GameObject>();
             foreach (var obj in allObjects)
             {

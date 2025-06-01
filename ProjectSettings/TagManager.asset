@@ -9,6 +9,7 @@ TagManager:
   - Carretera
   - Coche
   - Jugador
+  - Extremo
   layers:
   - Default
   - TransparentFX
