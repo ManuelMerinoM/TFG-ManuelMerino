@@ -1,4 +1,4 @@
-###TFG Manuel Merino
+# TFG Manuel Merino
 
 Este proyecto tiene como objetivo principal implementar y analizar el aprendizaje por
 refuerzo en el contexto de los videojuegos, utilizando Unity ML-Agents como herramienta
